@@ -70,19 +70,11 @@ const DailyForecast = ({ data, forecastList }) => {
       </Grid>
     );
 
-  if (!noDataProvided && forecastList && forecastList.length === 0)
-    subHeader = (
-      <ErrorBox
-        flex="1"
-        type="info"
-        margin="2rem auto"
-        errorMessage="No available forecasts for tonight."
-      />
-    );
+  // Removed warning message for empty forecastList
 
   return (
     <Layout
-      title="TODAY'S FORECAST"
+      title="আজকের সারাদিনের আবহাওয়া"
       content={content}
       sectionSubHeader={subHeader}
       sx={{ marginTop: '2.9rem' }}

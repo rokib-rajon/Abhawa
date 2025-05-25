@@ -4,6 +4,7 @@ import AirIcon from '@mui/icons-material/Air';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import { ReactComponent as HumidityIcon } from '../../assets/humidity.svg';
+import { toBengaliNumber } from '../../utilities/DataUtils';
 
 const WeeklyForecastItem = ({ value, type }) => {
   let iconContent;
@@ -41,7 +42,7 @@ const WeeklyForecastItem = ({ value, type }) => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '31px',
-        color: 'rgba(255, 255, 255, .7)',
+        color: 'rgba(243, 243, 243, 0.93)',
         gap: { xs: '3px', sm: '4px', md: '6px' },
         width: '100%',
       }}
@@ -58,7 +59,7 @@ const WeeklyForecastItem = ({ value, type }) => {
           lineHeight: 1,
         }}
       >
-        {value}
+        {toBengaliNumber(value)}
       </Typography>
     </Box>
   );

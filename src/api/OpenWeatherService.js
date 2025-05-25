@@ -1,7 +1,7 @@
 const GEO_API_URL = 'https://wft-geo-db.p.rapidapi.com/v1/geo';
 
-const WEATHER_API_URL = 'https://api.openweathermap.org/data/2.5';
-const WEATHER_API_KEY = 'Your API KEY';
+// MET Norway Locationforecast API endpoint (compact version)
+const MET_API_URL = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
 
 const GEO_API_OPTIONS = {
   method: 'GET',
@@ -11,22 +11,32 @@ const GEO_API_OPTIONS = {
   },
 };
 
+/**
+ * Fetch weather data from MET Norway Locationforecast API.
+ * @param {number} lat - Latitude
+ * @param {number} lon - Longitude
+ * @returns {Promise<Object>} Weather forecast data
+ * @see https://api.met.no/weatherapi/locationforecast/2.0/documentation
+ */
 export async function fetchWeatherData(lat, lon) {
   try {
-    let [weatherPromise, forcastPromise] = await Promise.all([
-      fetch(
-        `${WEATHER_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
-      ),
-      fetch(
-        `${WEATHER_API_URL}/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
-      ),
-    ]);
-
-    const weatherResponse = await weatherPromise.json();
-    const forcastResponse = await forcastPromise.json();
-    return [weatherResponse, forcastResponse];
+    const response = await fetch(
+      `${MET_API_URL}?lat=${lat}&lon=${lon}`,
+      {
+        headers: {
+          'User-Agent': 'AbhawaWeatherApp/1.0 support@abhawa.com',
+          'Accept': 'application/json'
+        }
+      }
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch weather data from MET Norway');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.log(error);
+    return null;
   }
 }
 
@@ -41,6 +51,5 @@ export async function fetchCities(input) {
     return data;
   } catch (error) {
     console.log(error);
-    return;
   }
 }

@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import { weatherIcon } from '../../../utilities/IconsUtils';
+import { toBengaliNumber } from '../../../utilities/DataUtils';
 
 const DailyForecastItem = (props) => {
   return (
@@ -22,7 +22,7 @@ const DailyForecastItem = (props) => {
         sx={{
           fontWeight: '400',
           fontSize: { xs: '10px', sm: '12px' },
-          color: 'rgba(255, 255, 255, .7)',
+          color: 'rgba(13, 13, 13, 0.7)',
           lineHeight: 1,
           padding: '4px',
           fontFamily: 'Poppins',
@@ -50,7 +50,7 @@ const DailyForecastItem = (props) => {
             margin: '0 auto',
           }}
           alt="weather"
-          src={weatherIcon(`${props.data.weather[0].icon}.png`)}
+          src={require(`../../../assets/weather/${props.item.icon}.svg`)}
         />
       </Box>
       <Typography
@@ -66,7 +66,7 @@ const DailyForecastItem = (props) => {
           fontFamily: 'Poppins',
         }}
       >
-        {props.item.temperature}
+        {toBengaliNumber(props.item.temperature)}
       </Typography>
     </Box>
   );

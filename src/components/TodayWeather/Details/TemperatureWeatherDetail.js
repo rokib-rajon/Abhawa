@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import { toBengaliNumber } from '../../../utilities/DataUtils';
 
 const TemperatureWeatherDetail = (props) => {
   return (
@@ -26,7 +27,7 @@ const TemperatureWeatherDetail = (props) => {
           fontFamily: 'Poppins',
         }}
       >
-        {Math.round(props.temperature)} °C
+        {toBengaliNumber(Math.round(props.temperature))} °C
       </Typography>
       <Typography
         variant="h4"

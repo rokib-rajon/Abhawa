@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import { getDayMonthFromDate } from '../../../utilities/DatetimeUtils';
-import { weatherIcon } from '../../../utilities/IconsUtils';
 import ErrorBox from '../../Reusable/ErrorBox';
 import CityDateDetail from './CityDateDetail';
 import TemperatureWeatherDetail from './TemperatureWeatherDetail';
@@ -50,12 +49,12 @@ const Details = ({ data }) => {
             height: '80px',
           }}
         >
-          <WeatherIconDetail src={weatherIcon(`${data.weather[0].icon}.png`)} />
+          <WeatherIconDetail src={require(`../../../assets/weather/${data.weather[0].icon}.svg`)} />
         </Grid>
       </>
     );
 
-  return <Layout title="CURRENT WEATHER" content={content} />;
+  return <Layout title="বর্তমান আবহাওয়া" content={content} />;
 };
 
 export default Details;

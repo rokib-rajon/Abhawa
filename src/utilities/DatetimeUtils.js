@@ -1,27 +1,27 @@
-import { MONTHS, DAYS } from './DateConstants';
+import { MONTHS, DAYS, MONTHS_BN, DAYS_BN } from './DateConstants';
 
 const date = new Date();
 
-export function getWeekDays() {
+export function getWeekDays(locale = 'bn') {
   const dayInAWeek = new Date().getDay();
-  const days = DAYS.slice(dayInAWeek, DAYS.length).concat(
-    DAYS.slice(0, dayInAWeek)
+  const days = (locale === 'bn' ? DAYS_BN : DAYS).slice(dayInAWeek, (locale === 'bn' ? DAYS_BN : DAYS).length).concat(
+    (locale === 'bn' ? DAYS_BN : DAYS).slice(0, dayInAWeek)
   );
   return days;
 }
 
-export function getDayMonthFromDate() {
-  const month = MONTHS[date.getMonth()].slice(0, 3);
+export function getDayMonthFromDate(locale = 'bn') {
+  const month = (locale === 'bn' ? MONTHS_BN : MONTHS)[date.getMonth()].slice(0, 3);
   const day = date.getUTCDate();
 
   return day + ' ' + month;
 }
 
-export function transformDateFormat() {
-  const month = date.toLocaleString('en-US', { month: '2-digit' });
-  const day = date.toLocaleString('en-US', { day: '2-digit' });
+export function transformDateFormat(locale = 'bn') {
+  const month = date.toLocaleString(locale === 'bn' ? 'bn-BD' : 'en-US', { month: '2-digit' });
+  const day = date.toLocaleString(locale === 'bn' ? 'bn-BD' : 'en-US', { day: '2-digit' });
   const year = date.getFullYear();
-  const time = date.toLocaleString('en-US', {
+  const time = date.toLocaleString(locale === 'bn' ? 'bn-BD' : 'en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
@@ -32,12 +32,12 @@ export function transformDateFormat() {
   return newFormatDate;
 }
 
-export function getUTCDatetime() {
-  const utcTime = date.toLocaleString('en-US', {
+export function getUTCDatetime(locale = 'bn') {
+  const utcTime = date.toLocaleString(locale === 'bn' ? 'bn-BD' : 'en-US', {
     hour: '2-digit',
     minute: '2-digit',
     hourCycle: 'h23',
-    timeZone: 'UTC',
+    timeZone: 'Asia/Dhaka',
   });
 
   const isoDateString = new Date().toISOString();
@@ -45,13 +45,13 @@ export function getUTCDatetime() {
   return utcDate;
 }
 
-export function getUTCTime() {
-  const utcTime = date.toLocaleString('en-US', {
+export function getUTCTime(locale = 'bn') {
+  const utcTime = date.toLocaleString(locale === 'bn' ? 'bn-BD' : 'en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hourCycle: 'h23',
-    timeZone: 'UTC',
+    timeZone: 'Asia/Dhaka',
   });
 
   return utcTime;
