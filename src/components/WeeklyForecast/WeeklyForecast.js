@@ -100,7 +100,7 @@ const WeeklyForecast = ({ data }) => {
             </Grid>
           );
         })}
-        {data.list.length === 5 && (
+        {data.list.length === 8 && (
           <Grid
             item
             xs={12}
@@ -116,7 +116,7 @@ const WeeklyForecast = ({ data }) => {
             }}
           >
             <UnfedForecastItem
-              day={forecastDays[5]}
+              day={forecastDays[8]}
               value="NaN"
               src={weatherIcon('unknown.png')}
             />
@@ -127,7 +127,7 @@ const WeeklyForecast = ({ data }) => {
 
   return (
     <Layout
-      title="WEEKLY FORECAST"
+      title="সাপ্তাহিক পুর্বাভাস"
       content={content}
       mb=".8rem"
       sx={{
