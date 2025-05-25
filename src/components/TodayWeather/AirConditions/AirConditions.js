@@ -13,22 +13,22 @@ const TodayWeatherAirConditions = ({ data }) => {
     content = (
       <>
         <AirConditionsItem
-          title="Real Feel"
+          title="অনুভূত বাতাসের তাপমাত্রা"
           value={`${Math.round(data.main.feels_like)} °C`}
           type="temperature"
         />
         <AirConditionsItem
-          title="Wind"
+          title="বাতাসের গতি"
           value={`${data.wind.speed} m/s`}
           type="wind"
         />
         <AirConditionsItem
-          title="Clouds"
+          title="আকশে মেঘের পরিমাণ"
           value={`${Math.round(data.clouds.all)} %`}
           type="clouds"
         />
         <AirConditionsItem
-          title="Humidity"
+          title="আর্দ্রতা"
           value={`${Math.round(data.main.humidity)} %`}
           type="humidity"
         />
@@ -36,7 +36,7 @@ const TodayWeatherAirConditions = ({ data }) => {
     );
   return (
     <Layout
-      title="AIR CONDITIONS"
+      title="বাতাসের অবস্থা"
       content={content}
       mb="1rem"
       sx={{ marginTop: '2.9rem' }}
