@@ -17,15 +17,16 @@ const Footer = () => (
         <img src={Logo} alt="Abhawa Logo" style={{ height: 100 }} />
       </a>
     </Box>
-    <Typography variant="body2" sx={{ fontSize: '14px', mb: 1 }}>
-      © {new Date().getFullYear()} আবহাওয়া |
-      বাংলাদেশের সবচেয়ে নির্ভরযোগ্য আবহাওয়া ওয়েবসাইট । 
-    </Typography>
+   
     <Box>
       <Link href="/about" color="inherit" underline="hover" sx={{ mx: 1 }}>About</Link>
       <Link href="/contact" color="inherit" underline="hover" sx={{ mx: 1 }}>Contact</Link>
       <Link href="/privacy" color="inherit" underline="hover" sx={{ mx: 1 }}>Privacy Policy</Link>
     </Box>
+    <Typography variant="body2" sx={{ fontSize: '14px', mb: 1 }}>
+      © {new Date().getFullYear()} আবহাওয়া |
+      বাংলাদেশের আবহাওয়া ওয়েবসাইট । 
+    </Typography>
   </Box>
 );
 

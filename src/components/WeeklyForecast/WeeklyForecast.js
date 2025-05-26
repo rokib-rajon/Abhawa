@@ -4,7 +4,6 @@ import { getWeekDays } from '../../utilities/DatetimeUtils';
 import { weatherIcon } from '../../utilities/IconsUtils';
 import WeeklyForecastItem from './WeeklyForecastItem';
 import ErrorBox from '../Reusable/ErrorBox';
-import UnfedForecastItem from './UnfedForecastItem';
 import DayWeatherDetails from './DayWeatherDetails';
 import Layout from '../Reusable/Layout';
 

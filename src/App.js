@@ -16,10 +16,12 @@ import About from './components/Reusable/about';
 import Contact from './components/Reusable/contact';
 import Privacy from './components/Reusable/privacy';
 
+
 import {
   getTodayForecastWeather,
   getWeekForecastWeather,
 } from './utilities/DataUtils';
+import Ticker from './components/Reusable/Ticker';
 
 function App() {
   const [todayWeather, setTodayWeather] = useState(null);
@@ -27,6 +29,7 @@ function App() {
   const [weekForecast, setWeekForecast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  // eslint-disable-next-line
   const [locationName, setLocationName] = useState('');
 
   // Helper: Reverse geocode coordinates to location name
@@ -227,6 +230,9 @@ function App() {
           <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
         </a>
       </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+       <Ticker />
+        </Box>
       <Box sx={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={

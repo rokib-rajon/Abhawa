@@ -117,10 +117,7 @@ export const getTodayForecastWeather = (response, current_date, current_datetime
   // Convert current_date to English numerals for comparison
   const enCurrentDate = String(current_date).replace(/[০-৯]/g, d => ({'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'}[d]||d));
   response.properties.timeseries.slice().map((item) => {
-    // Debug log for date filtering
-    if (typeof window !== 'undefined' && window.console) {
-      console.log('Checking timeseries item:', item.time, 'against current_date:', current_date, 'enCurrentDate:', enCurrentDate);
-    }
+    
     // Only include forecasts for today and not beyond
     if (item.time.startsWith(enCurrentDate.substring(0, 10))) {
       const details = item.data.instant.details;
