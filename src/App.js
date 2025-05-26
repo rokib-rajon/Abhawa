@@ -164,7 +164,8 @@ function App() {
           lineHeight: '22px',
         }}
       >
-        বাংলাদেশের সবচাইতে সমৃদ্ধ আবহাওয়া ওয়েবসাইট। শীঘ্রই আসছে আরো উন্নত অনেক ফিচার নিয়ে। 
+        বাংলাদেশের সবচাইতে সমৃদ্ধ আবহাওয়া ওয়েবসাইট। 
+        শীঘ্রই আসছে আরো উন্নত অনেক ফিচার নিয়ে।
       </Typography>
     </Box>
   );
@@ -230,7 +231,7 @@ function App() {
           <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
         </a>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
        <Ticker />
         </Box>
       <Box sx={{ flex: 1 }}>

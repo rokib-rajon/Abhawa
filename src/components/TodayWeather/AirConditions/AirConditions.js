@@ -13,7 +13,7 @@ const TodayWeatherAirConditions = ({ data }) => {
     content = (
       <>
         <AirConditionsItem
-          title="অনুভূত বাতাসের তাপমাত্রা"
+          title="অনুভূত তাপমাত্রা"
           value={`${Math.round(data.main.feels_like)} °C`}
           type="temperature"
         />
@@ -23,7 +23,7 @@ const TodayWeatherAirConditions = ({ data }) => {
           type="wind"
         />
         <AirConditionsItem
-          title="আকশে মেঘের পরিমাণ"
+          title="মেঘাচ্ছন্নতা"
           value={`${Math.round(data.clouds.all)} %`}
           type="clouds"
         />
