@@ -1,3 +1,5 @@
+import { ALL_DESCRIPTIONS_BN } from './DateConstants';
+
 export function groupBy(key) {
   return function group(array) {
     return array.reduce((acc, obj) => {
@@ -64,6 +66,11 @@ export const getWeekForecastWeather = (response, descriptions_list) => {
     return item;
   });
 
+  // Exclude today's date from weekly forecast
+  const todayDate = new Date().toISOString().substring(0, 10);
+  forecast_data = forecast_data.filter(item => item.date !== todayDate);
+  descriptions_data = descriptions_data.filter(item => item.date !== todayDate);
+
   const groupByDate = groupBy('date');
   let grouped_forecast_data = groupByDate(forecast_data);
   let grouped_forecast_descriptions = groupByDate(descriptions_data);
@@ -104,26 +111,22 @@ export const getWeekForecastWeather = (response, descriptions_list) => {
 
 export const getTodayForecastWeather = (response, current_date, current_datetime) => {
   let all_today_forecasts = [];
-  let all_today_forecasts_all = [];
 
   // met.no Locationforecast API: response.properties.timeseries is the main array
   if (!response || !response.properties || !response.properties.timeseries) return [];
+  // Convert current_date to English numerals for comparison
+  const enCurrentDate = String(current_date).replace(/[০-৯]/g, d => ({'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'}[d]||d));
   response.properties.timeseries.slice().map((item) => {
+    // Debug log for date filtering
+    if (typeof window !== 'undefined' && window.console) {
+      console.log('Checking timeseries item:', item.time, 'against current_date:', current_date, 'enCurrentDate:', enCurrentDate);
+    }
     // Only include forecasts for today and not beyond
-    if (item.time.startsWith(current_date.substring(0, 10))) {
+    if (item.time.startsWith(enCurrentDate.substring(0, 10))) {
       const details = item.data.instant.details;
       const summary = item.data.next_1_hours?.summary || item.data.next_6_hours?.summary || item.data.next_12_hours?.summary;
       const timeStr = item.time.split('T')[1].substring(0, 5);
-      // Use ISO string for comparison
-      const itemTimestamp = Math.floor(new Date(item.time).getTime() / 1000);
-      if (itemTimestamp > current_datetime) {
-        all_today_forecasts.push({
-          time: timeStr,
-          icon: summary ? summary.symbol_code : 'unknown',
-          temperature: Math.round(details.air_temperature) + ' °C',
-        });
-      }
-      all_today_forecasts_all.push({
+      all_today_forecasts.push({
         time: timeStr,
         icon: summary ? summary.symbol_code : 'unknown',
         temperature: Math.round(details.air_temperature) + ' °C',
@@ -131,14 +134,7 @@ export const getTodayForecastWeather = (response, current_date, current_datetime
     }
     return item;
   });
-  // Only return today's forecasts, not future days
-  if (all_today_forecasts.length === 0 && all_today_forecasts_all.length > 0) {
-    return [...all_today_forecasts_all];
-  } else if (all_today_forecasts.length < 7) {
-    return [...all_today_forecasts];
-  } else {
-    return all_today_forecasts.slice(0, 6);
-  }
+  return all_today_forecasts;
 };
 
 // Bengali numeral conversion utility
@@ -147,4 +143,42 @@ export function toBengaliNumber(input) {
     '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
   };
   return String(input).replace(/[0-9]/g, d => enToBn[d] || d);
+}
+
+// Bengali month and day names
+export const bengaliMonths = [
+  'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+  'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+];
+export const bengaliDays = [
+  'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'
+];
+
+// Format date to Bengali (YYYY-MM-DD or Date object)
+export function formatDateToBengali(dateInput) {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  const day = toBengaliNumber(date.getDate());
+  const month = bengaliMonths[date.getMonth()];
+  const year = toBengaliNumber(date.getFullYear());
+  const weekday = bengaliDays[date.getDay()];
+  return `${weekday}, ${day} ${month} ${year}`;
+}
+
+// Format time to Bengali (HH:mm)
+export function formatTimeToBengali(dateInput) {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  const hour = toBengaliNumber(date.getHours().toString().padStart(2, '0'));
+  const minute = toBengaliNumber(date.getMinutes().toString().padStart(2, '0'));
+  return `${hour}:${minute}`;
+}
+
+// Weather description translation
+
+export function translateWeatherDescriptionBn(desc) {
+  if (!desc) return '';
+  // Try exact match
+  if (ALL_DESCRIPTIONS_BN[desc]) return ALL_DESCRIPTIONS_BN[desc];
+  // Try lowercase match
+  if (ALL_DESCRIPTIONS_BN[desc.toLowerCase()]) return ALL_DESCRIPTIONS_BN[desc.toLowerCase()];
+  return desc;
 }

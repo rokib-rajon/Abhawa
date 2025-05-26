@@ -5,7 +5,6 @@ import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import TodayWeather from './components/TodayWeather/TodayWeather';
 import { fetchWeatherData } from './api/OpenWeatherService';
 import { transformDateFormat } from './utilities/DatetimeUtils';
-import UTCDatetime from './components/Reusable/UTCDatetime';
 import LoadingBox from './components/Reusable/LoadingBox';
 import { ReactComponent as SplashIcon } from './assets/splash-icon.svg';
 import Logo from './assets/logo.png';
@@ -28,105 +27,107 @@ function App() {
   const [weekForecast, setWeekForecast] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [locationName, setLocationName] = useState('');
+
+  // Helper: Reverse geocode coordinates to location name
+  async function reverseGeocode(lat, lon) {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+      const data = await response.json();
+      if (data && data.address) {
+        return data.address.city || data.address.town || data.address.village || data.address.hamlet || data.address.county || data.address.state || data.address.country || '';
+      }
+      return '';
+    } catch (e) {
+      return '';
+    }
+  }
 
   useEffect(() => {
     // Try to get user's location on mount
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          // Use a dummy label for city, will be replaced by actual city after fetch
-          searchChangeHandler({ label: 'Your Location', value: `${latitude} ${longitude}` });
+          // Reverse geocode for display
+          const locName = await reverseGeocode(latitude, longitude);
+          setLocationName(locName || 'আপনার অবস্থান');
+          searchChangeHandler({ label: locName || 'আপনার অবস্থান', value: `${latitude} ${longitude}` });
         },
         (err) => {
           // If permission denied or error, fallback to Dhaka
+          setLocationName('Dhaka');
           searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
         }
       );
     } else {
       // If geolocation not supported, fallback to Dhaka
+      setLocationName('Dhaka');
       searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
     }
     // eslint-disable-next-line
   }, []);
+
   const searchChangeHandler = async (enteredData) => {
     const [latitude, longitude] = enteredData.value.split(' ');
-
     setIsLoading(true);
-
     const currentDate = transformDateFormat();
+    const currentDateOnly = currentDate.substring(0, 10);
     const date = new Date();
     let dt_now = Math.floor(date.getTime() / 1000);
-
     try {
-      // met.no returns a single forecast object
       const forecastResponse = await fetchWeatherData(latitude, longitude);
-      console.log('MET.no API Response:', forecastResponse);
-      
       if (!forecastResponse) {
-        console.error('No response from MET.no API');
         setError(true);
         setIsLoading(false);
         return;
       }
-      
       const all_today_forecasts_list = getTodayForecastWeather(
         forecastResponse,
-        currentDate,
+        currentDateOnly,
         dt_now
       );
-      console.log('Today forecasts:', all_today_forecasts_list);
-
       const all_week_forecasts_list = getWeekForecastWeather(
         forecastResponse,
         ALL_DESCRIPTIONS
       );
-      console.log('Week forecasts:', all_week_forecasts_list);
-
-      // Get current weather data from the first timeseries entry
-      const currentWeather = forecastResponse.properties.timeseries[0];
-      const currentDetails = currentWeather.data.instant.details;
-      const currentSummary = currentWeather.data.next_1_hours?.summary || currentWeather.data.next_6_hours?.summary || currentWeather.data.next_12_hours?.summary;
-      
+      // Reverse geocode if city label is missing or generic
+      let cityLabel = enteredData.label;
+      if (!cityLabel || cityLabel === 'আপনার অবস্থান' || cityLabel === 'Dhaka') {
+        const locName = await reverseGeocode(latitude, longitude);
+        setLocationName(locName || cityLabel);
+        cityLabel = locName || cityLabel;
+      } else {
+        setLocationName(cityLabel);
+      }
       setTodayForecast([...all_today_forecasts_list]);
       setTodayWeather({ 
-        city: enteredData.label,
+        city: cityLabel,
         main: {
-          temp: Math.round(currentDetails.air_temperature),
-          feels_like: Math.round(currentDetails.air_temperature),
-          humidity: currentDetails.relative_humidity
+          temp: Math.round(forecastResponse.properties.timeseries[0].data.instant.details.air_temperature),
+          feels_like: Math.round(forecastResponse.properties.timeseries[0].data.instant.details.air_temperature),
+          humidity: forecastResponse.properties.timeseries[0].data.instant.details.relative_humidity
         },
         weather: [{
-          description: currentSummary ? currentSummary.symbol_code : 'unknown',
-          icon: currentSummary ? currentSummary.symbol_code : 'unknown'
+          description: forecastResponse.properties.timeseries[0].data.next_1_hours?.summary?.symbol_code || forecastResponse.properties.timeseries[0].data.next_6_hours?.summary?.symbol_code || forecastResponse.properties.timeseries[0].data.next_12_hours?.summary?.symbol_code || 'unknown',
+          icon: forecastResponse.properties.timeseries[0].data.next_1_hours?.summary?.symbol_code || forecastResponse.properties.timeseries[0].data.next_6_hours?.summary?.symbol_code || forecastResponse.properties.timeseries[0].data.next_12_hours?.summary?.symbol_code || 'unknown'
         }],
         wind: {
-          speed: currentDetails.wind_speed
+          speed: forecastResponse.properties.timeseries[0].data.instant.details.wind_speed
         },
         clouds: {
-          all: currentDetails.cloud_area_fraction
+          all: forecastResponse.properties.timeseries[0].data.instant.details.cloud_area_fraction
         },
-        pressure: currentDetails.air_pressure_at_sea_level
+        pressure: forecastResponse.properties.timeseries[0].data.instant.details.air_pressure_at_sea_level
       });
       setWeekForecast({
-        city: enteredData.label,
+        city: cityLabel,
         list: all_week_forecasts_list,
       });
-      console.log('Today weather set:', { 
-         city: enteredData.label,
-         temperature: Math.round(currentDetails.air_temperature),
-         humidity: currentDetails.relative_humidity,
-         wind: currentDetails.wind_speed,
-         clouds: currentDetails.cloud_area_fraction,
-         pressure: currentDetails.air_pressure_at_sea_level,
-         description: currentSummary ? currentSummary.symbol_code : 'unknown'
-       });
     } catch (error) {
-      console.error('Error in searchChangeHandler:', error);
       setError(true);
     }
-
     setIsLoading(false);
   };
 
@@ -220,17 +221,17 @@ function App() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', px: 2 }}>
+    <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', px: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
         <a href="/">
-          <img src={Logo} alt="Abhawa Logo" style={{ height: 56 }} />
+          <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
         </a>
       </Box>
       <Box sx={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={
             <React.Fragment>
-              <UTCDatetime />
+              
               <Search onSearchChange={searchChangeHandler} />
               {appContent}
             </React.Fragment>

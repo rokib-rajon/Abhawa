@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import { getUTCDatetime } from '../../utilities/DatetimeUtils';
 
+
 const UTCDatetime = () => {
   const utcFullDate = getUTCDatetime();
   const utcTimeValue = (
@@ -10,10 +11,12 @@ const UTCDatetime = () => {
       component="h3"
       sx={{
         fontWeight: '400',
-        fontSize: { xs: '10px', sm: '12px' },
+        fontSize: { xs: '16px', sm: '18px' },
+        align: 'center',
         color: 'rgba(255, 255, 255, .7)',
         lineHeight: 1,
         paddingRight: '2px',
+        paddingBottom: '8px',
         fontFamily: 'Poppins',
       }}
     >

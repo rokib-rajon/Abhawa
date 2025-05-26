@@ -42,8 +42,8 @@ const WeeklyForecastItem = ({ value, type }) => {
         alignItems: 'center',
         justifyContent: 'center',
         height: '31px',
-        color: 'rgba(243, 243, 243, 0.93)',
-        gap: { xs: '3px', sm: '4px', md: '6px' },
+        color: 'rgba(243, 243, 243, 0.97)',
+        gap: { xs: '4px', sm: '6px', md: '8px' },
         width: '100%',
       }}
     >
@@ -52,11 +52,12 @@ const WeeklyForecastItem = ({ value, type }) => {
         variant="p"
         component="p"
         sx={{
-          fontSize: { xs: '12px', sm: '13px' },
-          fontWeight: { xs: '400', sm: '600' },
-          color: 'white',
+          fontSize: { xs: '14px', sm: '15px' },
+          fontWeight: { xs: '500', sm: '600' },
+          color: 'rgba(255,255,255,0.96)',
           fontFamily: 'Poppins',
           lineHeight: 1,
+          textShadow: '0 1px 2px rgba(0,0,0,0.16)',
         }}
       >
         {toBengaliNumber(value)}

@@ -6,11 +6,17 @@ const CityDateDetail = (props) => {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: { xs: 'column', sm: 'row' },
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
         height: '100%',
+        background: 'linear-gradient(90deg, rgba(0,153,255,0.12) 0%, rgba(0,212,255,0.08) 100%)',
+        borderRadius: '16px',
+        boxShadow: '0 2px 12px 0 rgba(0,0,0,0.08)',
+        padding: { xs: '10px 16px', sm: '8px 24px' },
+        marginBottom: { xs: '10px', sm: '16px' },
+        gap: { xs: '4px', sm: '12px' },
       }}
     >
       <Typography
@@ -18,12 +24,14 @@ const CityDateDetail = (props) => {
         component="h3"
         sx={{
           fontFamily: 'Poppins',
-          fontWeight: '600',
-          fontSize: { xs: '12px', sm: '14px', md: '16px' },
-          color: 'white',
+          fontWeight: '700',
+          fontSize: { xs: '15px', sm: '17px', md: '19px' },
+          color: '#fff',
           textTransform: 'uppercase',
-          lineHeight: 1,
-          marginBottom: '8px',
+          lineHeight: 1.1,
+          letterSpacing: '1.5px',
+          marginBottom: { xs: '2px', sm: '0' },
+          textShadow: '0 1px 2px rgba(0,0,0,0.12)',
         }}
       >
         {props.city}
@@ -32,14 +40,19 @@ const CityDateDetail = (props) => {
         variant="h4"
         component="h4"
         sx={{
-          fontSize: { xs: '10px', sm: '12px', md: '14px' },
-          color: 'rgba(255,255,255, .7)',
-          lineHeight: 1,
-          letterSpacing: { xs: '1px', sm: '0' },
+          fontSize: { xs: '13px', sm: '15px', md: '16px' },
+          color: 'rgba(255,255,255,0.88)',
+          lineHeight: 1.1,
+          letterSpacing: '1.2px',
           fontFamily: 'Roboto Condensed',
+          fontWeight: 500,
+          background: 'rgba(255,255,255,0.10)',
+          borderRadius: '8px',
+          padding: { xs: '2px 8px', sm: '2px 12px' },
+          boxShadow: '0 1px 4px 0 rgba(0,0,0,0.06)',
         }}
       >
-        Today {props.date}
+        আজ {props.date}
       </Typography>
     </Box>
   );

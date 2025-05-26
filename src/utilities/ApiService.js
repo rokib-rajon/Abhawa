@@ -29,7 +29,7 @@ export async function fetchWeatherData(lat, lon) {
       }
     );
     if (!response.ok) {
-      throw new Error('Failed to fetch weather data from MET Norway');
+      throw new Error('Failed to fetch weather data from API');
     }
     const data = await response.json();
     return data;

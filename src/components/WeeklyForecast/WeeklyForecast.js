@@ -33,7 +33,7 @@ const WeeklyForecast = ({ data }) => {
         xs={12}
         gap="4px"
       >
-        {data.list.map((item, idx) => {
+        {data.list.slice(0, 7).map((item, idx) => {
           return (
             <Grid
               item
@@ -54,6 +54,7 @@ const WeeklyForecast = ({ data }) => {
                 day={forecastDays[idx]}
                 src={weatherIcon(`${item.icon}`)}
                 description={item.description}
+                animated={true}
               />
 
               <Grid
@@ -100,28 +101,7 @@ const WeeklyForecast = ({ data }) => {
             </Grid>
           );
         })}
-        {data.list.length === 8 && (
-          <Grid
-            item
-            xs={12}
-            display="flex"
-            alignItems="center"
-            sx={{
-              padding: '2px 0 2px',
-              background:
-                'linear-gradient(0deg, rgba(255, 255, 255, .05) 0%, rgba(171, 203, 222, .05) 100%) 0% 0%',
-              boxShadow:
-                'rgba(0, 0, 0, 0.05) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-              borderRadius: '8px',
-            }}
-          >
-            <UnfedForecastItem
-              day={forecastDays[8]}
-              value="NaN"
-              src={weatherIcon('unknown.png')}
-            />
-          </Grid>
-        )}
+        {/* Remove UnfedForecastItem for 8th day since only 7 days shown */}
       </Grid>
     );
 
