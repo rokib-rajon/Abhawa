@@ -23,7 +23,7 @@ const CityDateDetail = (props) => {
         variant="h3"
         component="h3"
         sx={{
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
           fontWeight: '700',
           fontSize: { xs: '15px', sm: '17px', md: '19px' },
           color: '#fff',
@@ -44,7 +44,7 @@ const CityDateDetail = (props) => {
           color: 'rgba(255,255,255,0.88)',
           lineHeight: 1.1,
           letterSpacing: '1.2px',
-          fontFamily: 'Roboto Condensed',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
           fontWeight: 500,
           background: 'rgba(255,255,255,0.10)',
           borderRadius: '8px',

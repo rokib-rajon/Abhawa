@@ -11,8 +11,8 @@ const About = () => (
       <link rel="canonical" href="https://abhawa.com/about" />
     </Helmet>
     <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 }, borderRadius: 3, background: '#f7fafc' }}>
-      <Typography variant="h4" sx={{ mb: 2, fontFamily: 'Poppins', color: '#0099ff', textAlign: 'center' }}>আমাদের সম্পর্কে</Typography>
-      <Typography variant="body1" sx={{ fontFamily: 'Poppins', color: '#222', textAlign: 'justify', fontSize: { xs: '15px', sm: '17px' } }}>
+      <Typography variant="h2" component="h2" sx={{ mb: 2, fontFamily: "'Hind Siliguri', serif, sans-serif", color: '#0099ff', textAlign: 'center' }}>আমাদের সম্পর্কে</Typography>
+      <Typography variant="body1" sx={{ fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif", color: '#222', textAlign: 'justify', fontSize: { xs: '15px', sm: '17px' } }}>
         Abhawa (আবহাওয়া) বাংলাদেশের সবচেয়ে নির্ভরযোগ্য আবহাওয়া ওয়েবসাইট। এখানে আপনি পাবেন সর্বশেষ আবহাওয়ার আপডেট, সপ্তাহব্যাপী পূর্বাভাস, এবং আরও অনেক কিছু, সম্পূর্ণ বাংলায়। আমাদের লক্ষ্য হলো দেশের প্রতিটি মানুষের কাছে সহজ ও নির্ভরযোগ্য আবহাওয়ার তথ্য পৌঁছে দেয়া।
       </Typography>
     </Paper>

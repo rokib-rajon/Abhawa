@@ -110,6 +110,7 @@ const WeeklyForecast = ({ data }) => {
       content={content}
       mb=".8rem"
       sx={{
+      
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',

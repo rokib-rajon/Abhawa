@@ -10,7 +10,7 @@ const Footer = () => (
     textAlign: 'center',
     py: 2,
     mt: 4,
-    fontFamily: 'Poppins',
+    fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
   }}>
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
       <a href="/">

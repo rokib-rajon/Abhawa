@@ -40,7 +40,7 @@ const DailyForecastItem = (props) => {
           color: 'white',
           lineHeight: 1,
           padding: '4px',
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
           textShadow: '0 1px 2px rgba(0,0,0,0.16)',
         }}
       >
@@ -82,7 +82,7 @@ const DailyForecastItem = (props) => {
           textTransform: 'uppercase',
           lineHeight: 1,
           marginBottom: { xs: '8px', md: '0' },
-          textShadow: '0 1px 2px rgba(0,0,0,0.16)',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
         }}
       >
         {props.item.description_bn}
@@ -97,7 +97,7 @@ const DailyForecastItem = (props) => {
           textTransform: 'uppercase',
           lineHeight: 1,
           marginBottom: { xs: '8px', md: '0' },
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
         }}
       >
         {toBengaliNumber(props.item.temperature)}

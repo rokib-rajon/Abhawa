@@ -19,14 +19,14 @@ const Ticker = () => {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        background: 'linear-gradient(90deg, #0099ff22 0%, #00d4ff11 100%)',
+        background: 'linear-gradient(90deg,rgba(245, 214, 224, 0.13) 0%,rgba(255, 76, 198, 0.06) 100%)',
         borderRadius: '10px',
         boxShadow: '0 1px 8px 0 rgba(0,0,0,0.07)',
-        mb: 2,
+        mb: 1,
         py: 1,
-        px: 2,
+        px: 1,
         position: 'relative',
-        minHeight: '32px',
+        minHeight: '20px',
       }}
     >
       <Box
@@ -40,7 +40,7 @@ const Ticker = () => {
         <Typography
           variant="body1"
           sx={{
-            fontSize: { xs: '14px', sm: '18px' },
+            fontSize: { xs: '14px', sm: '16px' },
             color: 'gray',
             fontWeight: 500,
             letterSpacing: '0.5px',
@@ -52,7 +52,7 @@ const Ticker = () => {
         <Typography
           variant="body1"
           sx={{
-            fontSize: { xs: '14px', sm: '18px' },
+            fontSize: { xs: '14px', sm: '16px' },
             color: 'gray',
             fontWeight: 500,
             letterSpacing: '0.5px',

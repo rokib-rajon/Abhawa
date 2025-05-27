@@ -16,7 +16,7 @@ const DayWeatherDetails = (props) => {
       <Typography
         xs={12}
         sx={{
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
           fontWeight: { xs: '400', sm: '600' },
           fontSize: { xs: '14px', sm: '16px', md: '18px' },
           color: 'white',
@@ -57,7 +57,7 @@ const DayWeatherDetails = (props) => {
             fontSize: { xs: '14px', md: '16px' },
             color: 'rgba(255,255,255, .92)',
             lineHeight: 1,
-            fontFamily: 'Roboto Condensed',
+            fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
             textShadow: '0 1px 2px rgba(0,0,0,0.18)',
           }}
         >

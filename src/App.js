@@ -31,6 +31,29 @@ function App() {
   const [error, setError] = useState(false);
   // eslint-disable-next-line
   const [locationName, setLocationName] = useState('');
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstall(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setShowInstall(false);
+      }
+      setDeferredPrompt(null);
+    }
+  };
 
   // Helper: Reverse geocode coordinates to location name
   async function reverseGeocode(lat, lon) {
@@ -157,7 +180,7 @@ function App() {
         sx={{
           fontSize: { xs: '18px', sm: '20px' },
           color: 'rgba(255,255,255, .85)',
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
           textAlign: 'center',
           margin: '2rem 0',
           maxWidth: '80%',
@@ -214,7 +237,7 @@ function App() {
               fontSize: { xs: '10px', sm: '12px' },
               color: 'rgba(255, 255, 255, 0.8)',
               lineHeight: 1,
-              fontFamily: 'Poppins',
+              fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
             }}
           >
             লোড হচ্ছে...
@@ -225,31 +248,52 @@ function App() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', px: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
-        <a href="/">
-          <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
-        </a>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }}>
-       <Ticker />
+    <>
+      <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', px: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
+          <a href="/">
+            <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
+          </a>
         </Box>
-      <Box sx={{ flex: 1 }}>
-        <Routes>
-          <Route path="/" element={
-            <React.Fragment>
-              
-              <Search onSearchChange={searchChangeHandler} />
-              {appContent}
-            </React.Fragment>
-          } />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<Privacy />} />
-        </Routes>
-      </Box>
-      <Footer />
-    </Container>
+      
+         <Ticker sx={{ justifyContent: 'center', alignItems: 'center', }}/>
+      
+        <Box sx={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={
+              <React.Fragment>
+                
+                <Search onSearchChange={searchChangeHandler} />
+                {appContent}
+              </React.Fragment>
+            } />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+          </Routes>
+        </Box>
+        <Footer />
+      </Container>
+      {showInstall && (
+        <Box sx={{ position: 'fixed', bottom: 24, right: 24, zIndex: 2000 }}>
+          <button
+            onClick={handleInstallClick}
+            style={{
+              background: '#0099ff',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              padding: '12px 20px',
+              fontSize: 16,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              cursor: 'pointer',
+            }}
+          >
+            অ্যাপ ইন্সটল করুন
+          </button>
+        </Box>
+      )}
+    </>
   );
 }
 

@@ -41,10 +41,11 @@ const WeeklyForecastItem = ({ value, type }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '31px',
+        height: '50px',
         color: 'rgba(243, 243, 243, 0.97)',
         gap: { xs: '4px', sm: '6px', md: '8px' },
         width: '100%',
+        fontFamily: "'Hind Siliguri', serif, sans-serif"
       }}
     >
       {iconContent}
@@ -55,7 +56,7 @@ const WeeklyForecastItem = ({ value, type }) => {
           fontSize: { xs: '14px', sm: '15px' },
           fontWeight: { xs: '500', sm: '600' },
           color: 'rgba(255,255,255,0.96)',
-          fontFamily: 'Poppins',
+          fontFamily: "'Noto Serif Bengali', serif, sans-serif",
           lineHeight: 1,
           textShadow: '0 1px 2px rgba(0,0,0,0.16)',
         }}
