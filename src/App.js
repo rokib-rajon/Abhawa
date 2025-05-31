@@ -194,7 +194,16 @@ function App() {
           maxWidth: '80%',
           lineHeight: '22px',
         }}
-      >
+      > আপনার অবস্থানের আজকের আবহাওয়ার অথ্য লোড হচ্ছে। </Typography>
+      <Typography
+        variant="body1"
+        component="p"
+        sx={{
+          fontSize: { xs: '14px', sm: '16px' },
+          color: 'rgba(255,255,255,.85)',
+          fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
+          textAlign: 'center',  
+        }}>
         বাংলাদেশের সবচাইতে সমৃদ্ধ আবহাওয়া ওয়েবসাইট। 
         শীঘ্রই আসছে আরো উন্নত অনেক ফিচার নিয়ে।
       </Typography>
