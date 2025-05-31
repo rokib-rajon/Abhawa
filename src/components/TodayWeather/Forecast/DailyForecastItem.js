@@ -44,7 +44,7 @@ const DailyForecastItem = (props) => {
           textShadow: '0 1px 2px rgba(0,0,0,0.16)',
         }}
       >
-        {formatTimeToBengali12Hour(props.item.time)}
+        {formatTimeToBengali12Hour(props.time)}
       </Typography>
       <Box
         sx={{
@@ -69,7 +69,7 @@ const DailyForecastItem = (props) => {
             animation: 'weatherIconBounce 1.2s infinite alternate',
           }}
           alt="weather"
-          src={require(`../../../assets/weather/${props.item.icon}.svg`)}
+          src={require(`../../../assets/weather/${props.icon}.svg`)}
         />
       </Box>
       <Typography
@@ -85,7 +85,7 @@ const DailyForecastItem = (props) => {
           fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
         }}
       >
-        {props.item.description_bn}
+        {props.description_bn}
       </Typography>
       <Typography
         variant="h3"
@@ -100,7 +100,7 @@ const DailyForecastItem = (props) => {
           fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
         }}
       >
-        {toBengaliNumber(props.item.temperature)}
+        {toBengaliNumber(props.temperature)}
       </Typography>
     </Box>
   );

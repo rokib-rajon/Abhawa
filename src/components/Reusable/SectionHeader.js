@@ -4,15 +4,15 @@ import React from 'react';
 const SectionHeader = ({ title, mb }) => {
   return (
     <Typography
-      variant="h5"
-      component="h5"
+      variant="h2"
+      component="h2"
       sx={{
-        fontSize: { xs: '12px', sm: '16px', md: '18px' },
-        color: 'rgba(255,255,255,.7)',
-        fontWeight: '600',
-        lineHeight: 1,
+        fontSize: { xs: '18px', sm: '22px', md: '26px' },
+        color: '#0099ff',
+        fontWeight: '700',
+        lineHeight: 1.2,
         textAlign: 'center',
-        fontFamily: 'Roboto Condensed',
+        fontFamily: "'Hind Siliguri', sans-serif",
         marginBottom: mb ? mb : '1rem',
       }}
     >

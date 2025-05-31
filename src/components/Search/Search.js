@@ -26,6 +26,7 @@ const Search = ({ onSearchChange }) => {
   return (
     <AsyncPaginate
       placeholder="আপনার ঠিকানা খুঁজুন"
+      aria-label="আপনার ঠিকানা খুঁজুন"
       debounceTimeout={600}
       value={searchValue}
       onChange={onChangeHandler}

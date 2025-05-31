@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.abhawa.com</loc>
+    <lastmod>"+new Date().toISOString().split('T')[0]+"</lastmod>
   </url>
   <url>
     <loc>https://www.abhawa.com/about</loc>

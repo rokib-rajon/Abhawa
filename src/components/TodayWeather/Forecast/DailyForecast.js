@@ -40,7 +40,9 @@ const DailyForecast = ({ data, forecastList }) => {
       </Typography>
     );
 
-  let content;
+  // Always declare hooks at the top
+  const scrollRef = useRef(null);
+  const activeItemRef = useRef(null);
 
   // Find the index of the first forecast after current time
   let activeIdx = 0;
@@ -52,63 +54,50 @@ const DailyForecast = ({ data, forecastList }) => {
     }
   }
 
-  // Ref for scrolling to active item
-  const scrollRef = useRef(null);
-  const activeItemRef = useRef(null);
-
   useEffect(() => {
-    if (activeItemRef.current && scrollRef.current) {
-      const parent = scrollRef.current;
-      const child = activeItemRef.current;
-      // Scroll so the active item is visible (centered if possible)
-      parent.scrollLeft = child.offsetLeft - parent.offsetWidth / 2 + child.offsetWidth / 2;
+    if (!noDataProvided && forecastList.length > 0 && activeItemRef.current && scrollRef.current) {
+      activeItemRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     }
-  }, [forecastList]);
+  }, [activeIdx, noDataProvided, forecastList.length]);
 
-  if (noDataProvided) content = <ErrorBox flex="1" type="error" />;
+  let content;
 
-  if (!noDataProvided && forecastList.length > 0)
+  if (noDataProvided) {
+    content = <ErrorBox flex="1" type="error" />;
+  } else {
     content = (
-      <Box
-        ref={scrollRef}
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          overflowX: 'auto',
-          gap: '8px',
-          width: '100%',
-          paddingBottom: '8px',
+      <Box 
+        ref={scrollRef} 
+        sx={{ 
+          display: 'flex', 
+          overflowX: 'auto', 
+          gap: 2, 
+          pb: 2, 
+          width: '100%', // Ensure it takes full available width to allow overflow
+          // Add some padding to prevent scrollbar from overlapping content too much
+          // or use a custom scrollbar solution if needed later
         }}
       >
         {forecastList.map((item, idx) => (
           <Box
-            key={idx}
+            key={item.time}
             ref={idx === activeIdx ? activeItemRef : null}
-            sx={{
-              minWidth: '90px',
-              flex: '0 0 auto',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              border: idx === activeIdx ? '2px solid #1976d2' : 'none',
-              borderRadius: idx === activeIdx ? '10px' : '8px',
-              boxShadow: idx === activeIdx ? '0 0 8px #1976d2' : 'none',
-              background: idx === activeIdx ? 'rgba(25, 118, 210, 0.08)' : 'none',
-            }}
+            sx={{ minWidth: 90, flex: '0 0 auto' }}
           >
-            <DailyForecastItem item={item} data={data} isActive={idx === activeIdx} />
+            <DailyForecastItem {...item} active={idx === activeIdx} />
           </Box>
         ))}
       </Box>
     );
+  }
 
   return (
     <Layout
-      title="আজকের সারাদিনের আবহাওয়া"
+      title="দৈনিক পূর্বাভাস"
       content={content}
       sectionSubHeader={subHeader}
+      mb="1rem"
       sx={{ marginTop: '2.9rem' }}
-      mb="0.3rem"
     />
   );
 };

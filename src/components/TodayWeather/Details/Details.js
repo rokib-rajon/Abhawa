@@ -13,9 +13,11 @@ const Details = ({ data }) => {
   const noDataProvided =
     !data || Object.keys(data).length === 0 || data.cod === '404';
 
-  let content = <ErrorBox flex="1" type="error" />;
+  let content;
 
-  if (!noDataProvided)
+  if (noDataProvided) {
+    content = <ErrorBox flex="1" type="error" />;
+  } else {
     content = (
       <>
         <Grid
@@ -53,6 +55,7 @@ const Details = ({ data }) => {
         </Grid>
       </>
     );
+  }
 
   return <Layout title="বর্তমান আবহাওয়া" content={content} />;
 };

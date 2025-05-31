@@ -6,8 +6,10 @@ import WeeklyForecastItem from './WeeklyForecastItem';
 import ErrorBox from '../Reusable/ErrorBox';
 import DayWeatherDetails from './DayWeatherDetails';
 import Layout from '../Reusable/Layout';
+import LoadingBox from '../Reusable/LoadingBox'; // Import LoadingBox
+import { Box, Typography } from '@mui/material'; // Import Box and Typography for LoadingBox content
 
-const WeeklyForecast = ({ data }) => {
+const WeeklyForecast = ({ data, isLoading }) => {
   const forecastDays = getWeekDays();
 
   const noDataProvided =
@@ -22,8 +24,36 @@ const WeeklyForecast = ({ data }) => {
     </div>
   );
 
-  if (!noDataProvided)
+  if (isLoading && (!data || !data.list || data.list.length === 0)) {
     content = (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          minHeight: '200px', // Adjust height as needed
+        }}
+      >
+        <LoadingBox value="1">
+          <Typography
+            variant="h3"
+            component="h3"
+            sx={{
+              fontSize: { xs: '10px', sm: '12px' },
+              color: 'rgba(0,0,0, .8)', // Darker text for better visibility
+              lineHeight: 1,
+              fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
+            }}
+          >
+            সাপ্তাহিক পূর্বাভাস লোড হচ্ছে...
+          </Typography>
+        </LoadingBox>
+      </Box>
+    );
+  } else if (!noDataProvided) {
+    content = (
+      // Existing content rendering logic
       <Grid
         item
         container
@@ -103,6 +133,11 @@ const WeeklyForecast = ({ data }) => {
         {/* Remove UnfedForecastItem for 8th day since only 7 days shown */}
       </Grid>
     );
+  } else {
+    // This case handles when not loading and noDataProvided is true (e.g. error state or empty data after load)
+    // The initial 'content' with ErrorBox will be used, or you can define other specific UI
+  }
+    // Removed duplicated block from here
 
   return (
     <Layout

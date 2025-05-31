@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Grid, SvgIcon, Typography } from '@mui/material';
+import { Box, Container, Grid, SvgIcon, Typography, Button } from '@mui/material';
 import Search from './components/Search/Search';
 import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import TodayWeather from './components/TodayWeather/TodayWeather';
 import { fetchWeatherData } from './api/OpenWeatherService';
 import { transformDateFormat } from './utilities/DatetimeUtils';
-import LoadingBox from './components/Reusable/LoadingBox';
+
 import { ReactComponent as SplashIcon } from './assets/splash-icon.svg';
-import Logo from './assets/logo.png';
+import Logo from './assets/logo.svg';
 import ErrorBox from './components/Reusable/ErrorBox';
 import { ALL_DESCRIPTIONS } from './utilities/DateConstants';
 import Footer from './components/Reusable/footer';
@@ -15,6 +15,8 @@ import { Routes, Route } from 'react-router-dom';
 import About from './components/Reusable/about';
 import Contact from './components/Reusable/contact';
 import Privacy from './components/Reusable/privacy';
+import { Helmet } from 'react-helmet';
+import NotFound from './components/Reusable/NotFound';
 
 
 import {
@@ -58,7 +60,11 @@ function App() {
   // Helper: Reverse geocode coordinates to location name
   async function reverseGeocode(lat, lon) {
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`, {
+        headers: {
+          'User-Agent': 'Abhawa Weather App/1.0 (https://www.abhawa.com)' // Replace with your actual app info
+        }
+      });
       const data = await response.json();
       if (data && data.address) {
         return data.address.city || data.address.town || data.address.village || data.address.hamlet || data.address.county || data.address.state || data.address.country || '';
@@ -83,12 +89,14 @@ function App() {
         },
         (err) => {
           // If permission denied or error, fallback to Dhaka
+          console.error("Error getting location or permission denied: ", err);
           setLocationName('Dhaka');
           searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
         }
       );
     } else {
       // If geolocation not supported, fallback to Dhaka
+      console.log("Geolocation is not supported by this browser.");
       setLocationName('Dhaka');
       searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
     }
@@ -157,7 +165,7 @@ function App() {
     setIsLoading(false);
   };
 
-  let appContent = (
+  let appContentBase = (
     <Box
       xs={12}
       display="flex"
@@ -193,20 +201,7 @@ function App() {
     </Box>
   );
 
-  if (todayWeather && todayForecast && weekForecast) {
-    appContent = (
-      <React.Fragment>
-        <Grid item xs={12} md={todayWeather ? 6 : 12}>
-          <Grid item xs={12}>
-            <TodayWeather data={todayWeather} forecastList={todayForecast} />
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <WeeklyForecast data={weekForecast} />
-        </Grid>
-      </React.Fragment>
-    );
-  }
+  let appContent;
 
   if (error) {
     appContent = (
@@ -216,60 +211,92 @@ function App() {
         errorMessage="Something went wrong"
       />
     );
-  }
-
-  if (isLoading) {
+  } else if (todayWeather || (todayForecast && todayForecast.length > 0) || weekForecast || isLoading) {
+    // This condition means:
+    // - We have some weather data (today, forecast, or weekly) OR
+    // - We are currently in a loading state (isLoading is true)
+    // In either of these cases, we render the weather components.
+    // They will internally manage displaying data or their specific loading indicators.
     appContent = (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          minHeight: '500px',
-        }}
-      >
-        <LoadingBox value="1">
-          <Typography
-            variant="h3"
-            component="h3"
-            sx={{
-              fontSize: { xs: '10px', sm: '12px' },
-              color: 'rgba(255, 255, 255, 0.8)',
-              lineHeight: 1,
-              fontFamily: "'Noto Serif Bengali', 'Hind Siliguri', serif, sans-serif",
-            }}
-          >
-            লোড হচ্ছে...
-          </Typography>
-        </LoadingBox>
-      </Box>
+      <React.Fragment>
+        <Grid item xs={12} md={6} sx={{ minHeight: { xs: 'auto', md: '400px' } }}> {/* Added minHeight */}
+          <Grid item xs={12}>
+            <TodayWeather data={todayWeather} forecastList={todayForecast} isLoading={isLoading} />
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6} sx={{ minHeight: { xs: 'auto', md: '400px' } }}> {/* Added minHeight */}
+          <WeeklyForecast data={weekForecast} isLoading={isLoading} />
+        </Grid>
+      </React.Fragment>
     );
+  } else {
+    // Default to splash screen if no error, not initial loading, and no data yet (e.g. after location permission denied without fallback)
+    appContent = appContentBase;
   }
 
   return (
     <>
+      <Helmet>
+        <title>আবহাওয়া | বাংলার আবহাওয়া বাংলায়</title>
+        <meta name="description" content="বাংলাদেশের সবচেয়ে নির্ভরযোগ্য আবহাওয়া ওয়েবসাইট।" />
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "WeatherForecast",
+            "name": "আবহাওয়া | Weather",
+            "url": "https://www.abhawa.com/",
+            "description": "বাংলাদেশের সবচেয়ে নির্ভরযোগ্য আবহাওয়া ওয়েবসাইট।",
+            "inLanguage": "bn-BD",
+            "publisher": {
+              "@type": "Organization",
+              "name": "Abhawa Team"
+            }
+          }
+        `}</script>
+        <meta property="og:updated_time" content={new Date().toISOString()} />
+      </Helmet>
       <Container maxWidth="lg" sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', px: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2, mb: 2 }}>
           <a href="/">
-            <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} />
+            <img src={Logo} alt="Abhawa Logo" style={{ height: 80 }} width="240" height="80" />
           </a>
         </Box>
-      
-         <Ticker sx={{ justifyContent: 'center', alignItems: 'center', }}/>
-      
         <Box sx={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={
               <React.Fragment>
-                
                 <Search onSearchChange={searchChangeHandler} />
+              
+                <Ticker sx={{ justifyContent: 'center', alignItems: 'center', }}/>
+                {/* Removed the location request button */}
+                <Typography variant="h1" component="h1" sx={{
+                  fontFamily: "'Hind Siliguri', sans-serif",
+                  fontWeight: 700,
+                  color: '#0099ff',
+                  fontSize: { xs: '28px', sm: '36px', md: '44px' },
+                  textAlign: 'center',
+                  mb: 2
+                }}>
+                  বাংলাদেশের আবহাওয়া
+                </Typography>
+                
+                {/* appContent will now render the loading spinner, error, splash, or weather data below these titles */}
                 {appContent}
+                <Box sx={{ display: 'flex', justifyContent: 'center',mt: 2, mb: 2 }}>
+                  <Button variant="contained" color="primary" sx={{ fontFamily: "'Hind Siliguri', 'Noto Serif Bengali', serif, sans-serif", fontWeight: 600, fontSize: 16 }}
+                    onClick={() => window.open('https://www.facebook.com/sharer/sharer.php?u=https://www.abhawa.com', '_blank')}
+                  >
+                    শেয়ার করুন
+                  </Button>
+                </Box>
+                
               </React.Fragment>
+              
             } />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
         <Footer />

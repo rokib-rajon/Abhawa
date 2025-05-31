@@ -7,9 +7,11 @@ const TodayWeatherAirConditions = ({ data }) => {
   const noDataProvided =
     !data || Object.keys(data).length === 0 || data.cod === '404';
 
-  let content = <ErrorBox flex="1" type="error" />;
+  let content;
 
-  if (!noDataProvided)
+  if (noDataProvided) {
+    content = <ErrorBox flex="1" type="error" />;
+  } else {
     content = (
       <>
         <AirConditionsItem
@@ -34,6 +36,7 @@ const TodayWeatherAirConditions = ({ data }) => {
         />
       </>
     );
+  }
   return (
     <Layout
       title="বাতাসের অবস্থা"

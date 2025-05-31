@@ -23,3 +23,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Responsive media query for SEO */
+@media (max-width: 600px) {
+  body {
+    padding: 0 8px;
+    font-size: 15px;
+  }
+}
