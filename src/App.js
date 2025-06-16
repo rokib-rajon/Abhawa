@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, SvgIcon, Typography, Button } from '@mui/material';
+ import React, { useState, useEffect } from 'react';
 import Search from './components/Search/Search';
 import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import TodayWeather from './components/TodayWeather/TodayWeather';
@@ -89,14 +89,14 @@ function App() {
         },
         (err) => {
           // If permission denied or error, fallback to Dhaka
-          console.error("Error getting location or permission denied: ", err);
+          // console.error("Error getting location or permission denied: ", err);
           setLocationName('Dhaka');
           searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
         }
       );
     } else {
       // If geolocation not supported, fallback to Dhaka
-      console.log("Geolocation is not supported by this browser.");
+      // console.log("Geolocation is not supported by this browser.");
       setLocationName('Dhaka');
       searchChangeHandler({ label: 'Dhaka', value: '23.8103 90.4125' });
     }

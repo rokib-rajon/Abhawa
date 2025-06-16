@@ -1,4 +1,6 @@
 const CACHE_NAME = 'abhawa-cache-v1';
+/* eslint-disable no-restricted-globals */
+
 const urlsToCache = [
   '/',
   '/index.html',

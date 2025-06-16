@@ -35,7 +35,7 @@ export async function fetchWeatherData(lat, lon) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 }
@@ -50,6 +50,6 @@ export async function fetchCities(input) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }
